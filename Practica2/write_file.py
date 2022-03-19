@@ -1,5 +1,5 @@
 start = 0
-end = 100
+end = 10000
 file_path = "test.txt"
 
 output = str([i for i in reversed(range(start, end))])

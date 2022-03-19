@@ -2,9 +2,13 @@ from typing import List
 import matplotlib.pyplot as plt
 from time import time
 from read_file import parse_array
+import sys
 
 # Declare variables
 file_path = 'test.txt'
+
+# Change Recursion maximum
+sys.setrecursionlimit(10000)
 
 # Insertion Sort Algorithm
 def insertion_sort(list: List[int]):
@@ -26,21 +30,17 @@ def selection_sort(list: List[int]):
         list[i], list[index] = list[index], list[i]
 
 def shell_sort(arr):
-    gap = len(arr) // 2
-    while gap > 0:
-        i = 0
-        j = gap
-        while j < len(arr):
-            if arr[i] > arr[j]:
-                arr[i], arr[j] = arr[j], arr[i]
-            i = i + 1
-            j = j + 1
-            k = i
-            while k - gap > -1:
-                if arr[k - gap] > arr[k]:
-                    arr[k - gap], arr[k] = arr[k], arr[k - gap]
-                k = k-1
-        gap = gap // 2
+    N = len(arr)
+    h = N // 2
+    while h > 0:
+        for i in range(h, N):
+            temp = arr[i]
+            j = i - h
+            while j >= 0 and arr[j] > temp:
+                arr[j + h] = arr[j]
+                j -= h
+            arr[j + h] = temp
+        h //= 2
 
 def merge_sort(arr):
     if len(arr) > 1:
