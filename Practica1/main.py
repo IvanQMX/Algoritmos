@@ -6,7 +6,7 @@ from read_file import parse_array
 
 # Declare variables
 file_path = 'test.txt'
-x = 9999
+x = 9999999
 
 
 # Validate List for Binary Search
