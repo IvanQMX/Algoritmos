@@ -1,23 +1,31 @@
-from posixpath import split
 from typing import List
 import matplotlib.pyplot as plot
 from time import time
-import sys
 import math
+import os
+import sys
+sys.path.append( os.getcwd() + "/mixins")
+import functions
+
+
+# Variables for pow algorithm
+number = 2
+target = 10
+
+# multiply
+number_x: int = 12
+number_y: int =  100
 
 
 # Change Recursion maximum
 sys.setrecursionlimit(10000)
-
-def number_length( num: int ):
-  return len(str(num))
 
 
 def multiply_by_karatsuba(num_x: int, num_y: int):
   if (num_x < 10) or (num_y < 10) :
     return num_x * num_y
   else:
-    max_length = max( number_length(num_x),  number_length(num_y)  )
+    max_length = max( functions.number_length(num_x),  functions.number_length(num_y)  )
     max_length_avr = max_length / 2
     max_length_avr = math.floor( max_length_avr )
 
@@ -33,34 +41,37 @@ def multiply_by_karatsuba(num_x: int, num_y: int):
     return prod
 
 
-def graph_bars(label: List[str], data: List[float], title: str, xlabel: str, ylabel: str):
-  plot.bar(label,  data)
-  plot.title(title)
-  plot.xlabel(xlabel)
-  plot.ylabel(ylabel)
-  plot.show()
-
-
-def algotithm_time( algorithm ):
-  cpu_time_start = time()
-  print( algorithm )
-  cpu_time_end_karatsuba = (time() - cpu_time_start) * 1000
-  return cpu_time_end_karatsuba
+def pow(number:int, target:int):
+  if target == 0:
+    return 1
+  else:
+    return number*pow(number,target-1)
 
 
 
 
 if __name__ == '__main__':
-  karatsuba_time = algotithm_time( multiply_by_karatsuba(12, 100) )
-  print(f'Milisegundos: {karatsuba_time}')
+  karatsuba_time = functions.algotithm_time( multiply_by_karatsuba(number_x, number_y), "Algoritmo de karatsuba" )
+  print(f'Milisegundos: {karatsuba_time} \n ')
 
-  normal_time = algotithm_time( 25 * 100 )
-  print(f'Milisegundos: {normal_time}')
+  normal_time = functions.algotithm_time( number_x * number_y, "Algoritmo de multiply" )
+  print(f'Milisegundos: {normal_time} \n')
   
-graph_bars(
-  ['Karatsuba', 'Estandard'],
-  [ karatsuba_time, normal_time ],
-  'Comparación de tiempo',
-  'Algoritmo',
-  'Tiempo (Milisegundos)'
+  divide_conquer_pow_time = functions.algotithm_time( pow(number, target), "Algoritmo de potencia" )
+  print(f'Milisegundos: {divide_conquer_pow_time} \n')
+
+  functions.graph_bars(
+    ['Karatsuba', 'Estandard'],
+    [ karatsuba_time, normal_time ],
+    'Comparación de tiempo',
+    'Algoritmo',
+    'Tiempo (Milisegundos)'
+    )
+
+  functions.graph_bars(
+    [ "Potencia" ],
+    [ divide_conquer_pow_time ],
+    "Comparación de tiempo en algoritmos de búsqueda",
+    "Tipo de ordenamiento",
+    "Tiempo (Milisegundos)"
   )
