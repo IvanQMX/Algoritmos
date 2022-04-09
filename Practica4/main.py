@@ -1,6 +1,4 @@
 from typing import List
-import matplotlib.pyplot as plot
-from time import time
 import math
 import os
 import sys
