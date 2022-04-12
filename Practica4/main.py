@@ -114,8 +114,10 @@ def multiply_by_karatsuba(num_x: int, num_y: int):
 def pow(number:int, target:int):
   if target == 0:
     return 1
+  elif target%2==0:
+	  return pow(number, target/2)*pow(number, target/2)
   else:
-    return number*pow(number,target-1)
+    return number*pow(number, target//2)*pow(number, target//2)
 
 
 
