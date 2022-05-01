@@ -12,17 +12,18 @@ number = 2
 target = 10
 
 # multiply
-number_x: int = 12
-number_y: int =  100
+number_x: int = 20000000
+number_y: int = 50000000
 
 # A class to represent a Point in 2D plane
 class Point():
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
-P = [Point(2, 3), Point(12, 30),
-  	Point(40, 50), Point(5, 1),
-  	Point(12, 10), Point(3, 4)]
+P = [Point(100, 63), Point(35, 30),
+  	Point(40, 50), Point(5, 92),
+  	Point(12, 10), Point(6, 70),
+  	Point(25, 40), Point(80, 72)]
 n = len(P)
 
 
@@ -91,24 +92,21 @@ def closest(P, n):
 	return closestUtil(P, Q, n)
 
 
-def multiply_by_karatsuba(num_x: int, num_y: int):
-  if (num_x < 10) or (num_y < 10) :
-    return num_x * num_y
-  else:
-    max_length = max( functions.number_length(num_x),  functions.number_length(num_y)  )
-    max_length_avr = max_length / 2
-    max_length_avr = math.floor( max_length_avr )
+def karatsuba(x, y):
+    if x < 3 or y < 3:
+        return x * y
 
-    print( num_x, num_y, max_length_avr )
-    a = num_x / 10**(max_length_avr)
-    b = num_x % 10**(max_length_avr)
-    c = num_y / 10**(max_length_avr)
-    d = num_y % 10**(max_length_avr)
-    ac = multiply_by_karatsuba(a,c)
-    bd = multiply_by_karatsuba(b,d)
-    ad_plus_bc = multiply_by_karatsuba(a+b,c+d) - ac - bd
-    prod = ac * 10**(2*max_length_avr) + (ad_plus_bc * 10**max_length_avr) + bd
-    return prod
+    n = max(len(str(x)), len(str(y))) // 2
+    p = 10**n
+
+    a, b = divmod(x, p)
+    c, d = divmod(y, p)
+
+    ac = karatsuba(a, c)
+    bd = karatsuba(b, d)
+    abcd = karatsuba(a+b, c+d) - ac - bd
+
+    return (ac*p + abcd)*p + bd
 
 
 def pow(number:int, target:int):
@@ -123,21 +121,8 @@ def pow(number:int, target:int):
 
 
 if __name__ == '__main__':
-  karatsuba_time = functions.algotithm_time( multiply_by_karatsuba(number_x, number_y), "Karatsuba" )
-  print(f'Milisegundos: {karatsuba_time} \n ')
+  karatsuba_time = functions.algotithm_time(karatsuba(number_x, number_y), "Karatsuba" )
 
   normal_time = functions.algotithm_time( closest(P, n), "Menor functions.distancia" )
-  print(f'Milisegundos: {normal_time} \n')
   
   pow_time = functions.algotithm_time( pow(number, target), "Potencia" )
-  print(f'Milisegundos: {pow_time} \n')
- 
-
-
-  functions.graph_bars(
-    ['Karatsuba', 'Menor functions.distancia', "Potencia"],
-    [ karatsuba_time, normal_time, pow_time ],
-    'Comparación de tiempo',
-    'Algoritmo',
-    'Tiempo (Milisegundos)'
-    )
