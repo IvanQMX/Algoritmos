@@ -1,30 +1,57 @@
-MAX = 100
+# Python program to solve
+# Gold Mine problem
  
+MAX = 1000
+ 
+# Returns maximum amount of
+# gold that can be collected
+# when journey started from
+# first column and moves
+# allowed are right, right-up
+# and right-down
 def getMaxGold(gold, m, n):
  
+    # Create a table for storing
+    # intermediate results
+    # and initialize all cells to 0.
+    # The first row of
+    # goldMineTable gives the
+    # maximum gold that the miner
+    # can collect when starts that row
     goldTable = [[0 for i in range(n)]
                         for j in range(m)]
+ 
     for col in range(n-1, -1, -1):
         for row in range(m):
- 
+        
+            # Gold collected on going to
+            # the cell on the right(->)
             if (col == n-1):
                 right = 0
             else:
                 right = goldTable[row][col+1]
  
+            # Gold collected on going to
+            # the cell to right up (/)
             if (row == 0 or col == n-1):
                 right_up = 0
             else:
                 right_up = goldTable[row-1][col+1]
  
-      
+            # Gold collected on going to
+            # the cell to right down (\)
             if (row == m-1 or col == n-1):
                 right_down = 0
             else:
                 right_down = goldTable[row+1][col+1]
  
+            # Max gold collected from taking
+            # either of the above 3 paths
             goldTable[row][col] = gold[row][col] + max(right, right_up, right_down)
                                                             
+    # The max amount of gold
+    # collected will be the max
+    # value in first column of all rows
     res = goldTable[0][0]
     for i in range(1, m):
         res = max(res, goldTable[i][0])
@@ -32,12 +59,22 @@ def getMaxGold(gold, m, n):
     return res
      
 # Driver code
-gold = [[7, 1, 2, 0],
-    [1, 5, 8, 8],
-    [6, 5, 0, 2],
-    [8, 2, 5, 7]]
+gold = [[5, 0, 3, 9, 3, 2, 9, 4, 2, 2, 3],
+        [2, 3, 2, 6, 0, 3, 0, 4, 2, 2, 3],
+        [6, 4, 2, 2, 3, 0, 1, 4, 2, 1, 3],
+        [0, 3, 1, 4, 5, 0, 10, 4, 11, 2, 3],
+        [9, 3, 1, 4, 5, 0, 0, 4, 2, 2, 3],
+        [2, 3, 2, 6, 10, 3, 0, 4, 2, 2, 3],
+        [6, 4, 2, 2, 3, 0, 1, 4, 2, 1, 3],
+        [0, 3, 1, 4, 5, 9, 0, 4, 1, 2, 3],
+        [9, 3, 1, 4, 5, 0, 0, 4, 9, 2, 3],
+        [8, 5, 0, 8, 2, 3, 1, 4, 2, 2, 3]]
  
-m = 4
-n = 4
- 
+m = 10
+n = 11
+
 print(getMaxGold(gold, m, n))
+
+ 
+# This code is contributed
+# by Soumen Ghosh.
